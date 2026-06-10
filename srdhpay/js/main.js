@@ -1,137 +1,62 @@
-// main.js - Core Application Logic
-document.addEventListener('DOMContentLoaded', () => {
-  initApp();
-});
-
-function initApp() {
-  checkAuth();
-  setupThemeToggle();
-  setupSidebar();
-  setupKeyboardShortcuts();
-  loadSidebarHTML();
-}
-
-// Authentication Guard
-function checkAuth() {
-  const token = localStorage.getItem('srdh_token');
-  const currentPage = window.location.pathname.split('/').pop();
-  
-  if (!token && currentPage !== 'index.html' && currentPage !== '') {
-    window.location.href = 'index.html';
-  }
-}
-
-// Theme Management
-function setupThemeToggle() {
-  const isDark = localStorage.getItem('srdh_dark_mode') === 'true';
-  document.documentElement.classList.toggle('dark', isDark);
-  
-  const toggleBtn = document.getElementById('themeToggle');
-  if (toggleBtn) {
-    toggleBtn.innerHTML = isDark ? '☀️' : '🌙';
-    toggleBtn.addEventListener('click', () => {
-      const newDark = !document.documentElement.classList.contains('dark');
-      document.documentElement.classList.toggle('dark', newDark);
-      localStorage.setItem('srdh_dark_mode', newDark);
-      toggleBtn.innerHTML = newDark ? '☀️' : '🌙';
-    });
-  }
-}
-
-// Sidebar Loading
-async function loadSidebarHTML() {
+// main.js – เพิ่ม hamburger, sidebar role filter
+(async function() {
+  if (window.location.pathname.endsWith('index.html')) return;
+  const token = localStorage.getItem('token');
+  if (!token) { window.location.href = 'index.html'; return; }
+  const user = JSON.parse(localStorage.getItem('user') || '{}');
   const sidebarContainer = document.getElementById('sidebarContainer');
   if (sidebarContainer) {
-    try {
-      const response = await fetch('sidebar.html');
-      const html = await response.text();
-      sidebarContainer.innerHTML = html;
-      setupSidebar();
-      highlightCurrentPage();
-    } catch (e) {
-      console.error('Failed to load sidebar:', e);
-    }
-  }
-}
-
-function setupSidebar() {
-  const hamburger = document.getElementById('hamburgerBtn');
-  const sidebar = document.getElementById('sidebar');
-  if (hamburger && sidebar) {
-    hamburger.addEventListener('click', () => {
-      sidebar.classList.toggle('hidden');
-      sidebar.classList.toggle('flex');
+    const resp = await fetch('sidebar.html');
+    const html = await resp.text();
+    sidebarContainer.innerHTML = html;
+    // ซ่อนเมนูที่ไม่มีสิทธิ์
+    const menuItems = sidebarContainer.querySelectorAll('nav a');
+    menuItems.forEach(a => {
+      const module = a.dataset.module;
+      if (module && user.role && !DEFAULT_PERMISSIONS[module]?.includes(user.role)) {
+        a.style.display = 'none';
+      }
     });
+    // active page
+    const currentPage = window.location.pathname.split('/').pop();
+    menuItems.forEach(a => { if (a.getAttribute('href') === currentPage) a.classList.add('bg-purple-100','dark:bg-gray-700','font-semibold'); });
+    // logout
+    const logoutBtn = document.getElementById('logoutBtn');
+    if (logoutBtn) {
+      logoutBtn.addEventListener('click', async () => {
+        const confirm = await Swal.fire({ title: 'ออกจากระบบ?', icon: 'question', showCancelButton: true });
+        if (confirm.isConfirmed) {
+          await apiCall('logout');
+          localStorage.clear();
+          window.location.href = 'index.html';
+        }
+      });
+    }
   }
-}
-
-function highlightCurrentPage() {
-  const currentPage = window.location.pathname.split('/').pop();
-  const links = document.querySelectorAll('#sidebar a');
-  links.forEach(link => {
-    if (link.getAttribute('href') === currentPage) {
-      link.classList.add('bg-purple-100', 'dark:bg-purple-900', 'font-bold');
+  // Dark toggle
+  const darkToggle = document.getElementById('darkToggle');
+  if (darkToggle) {
+    darkToggle.addEventListener('click', () => {
+      document.documentElement.classList.toggle('dark');
+      localStorage.setItem('darkMode', document.documentElement.classList.contains('dark'));
+      darkToggle.textContent = document.documentElement.classList.contains('dark') ? '🌙' : '☀️';
+    });
+    if (localStorage.getItem('darkMode') === 'true') {
+      document.documentElement.classList.add('dark');
+      darkToggle.textContent = '🌙';
     }
-  });
-}
-
-// Keyboard Shortcuts
-function setupKeyboardShortcuts() {
-  document.addEventListener('keydown', (e) => {
-    if (e.ctrlKey && e.key === 's') {
-      e.preventDefault();
-      const saveBtn = document.querySelector('[data-shortcut="save"]');
-      if (saveBtn) saveBtn.click();
-    }
-    if (e.ctrlKey && e.key === 'f') {
-      e.preventDefault();
-      const searchBox = document.querySelector('input[type="search"], input[placeholder*="ค้นหา"]');
-      if (searchBox) searchBox.focus();
-    }
-    if (e.key === 'Escape') {
-      const modal = document.querySelector('.modal:not(.hidden)');
-      if (modal) modal.classList.add('hidden');
-    }
-  });
-}
-
-// Logout Function
-async function logout() {
-  const result = await Swal.fire({
-    title: 'ยืนยันการออกจากระบบ',
-    text: 'คุณต้องการออกจากระบบใช่หรือไม่?',
-    icon: 'question',
-    showCancelButton: true,
-    confirmButtonText: 'ออกจากระบบ',
-    cancelButtonText: 'ยกเลิก'
-  });
-  
-  if (result.isConfirmed) {
-    try {
-      await apiCall('logout');
-    } catch (e) {
-      // Ignore logout errors
-    }
-    localStorage.removeItem('srdh_token');
-    localStorage.removeItem('srdh_user');
-    window.location.href = 'index.html';
   }
-}
-
-// User Info
-function getUserInfo() {
-  const userStr = localStorage.getItem('srdh_user');
-  return userStr ? JSON.parse(userStr) : null;
-}
-
-// Toast Notification
-function showToast(message, type = 'success') {
-  const Toast = Swal.mixin({
-    toast: true,
-    position: 'top-end',
-    showConfirmButton: false,
-    timer: 3000,
-    timerProgressBar: true
-  });
-  Toast.fire({ icon: type, title: message });
-}
+  // Hamburger
+  const sidebar = document.getElementById('sidebar');
+  if (sidebar) {
+    const hamburger = document.createElement('button');
+    hamburger.className = 'lg:hidden fixed top-4 left-4 z-50 p-2 rounded bg-white dark:bg-gray-800 shadow';
+    hamburger.innerHTML = '<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>';
+    document.body.appendChild(hamburger);
+    hamburger.addEventListener('click', () => sidebar.classList.toggle('show'));
+    document.addEventListener('click', (e) => {
+      if (!sidebar.contains(e.target) && e.target !== hamburger && window.innerWidth < 1024) sidebar.classList.remove('show');
+    });
+    window.addEventListener('resize', () => { if (window.innerWidth >= 1024) sidebar.classList.remove('show'); });
+  }
+})();
