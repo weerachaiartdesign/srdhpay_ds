@@ -1,7 +1,7 @@
 // api-config.js – ตั้งค่า endpoint และค่าคงที่ผ่าน Proxy หลังบ้าน
 
 // 🔧 เปลี่ยน URL ตรงนี้ให้เป็นลิงก์ของ Cloudflare Workers ตัวใหม่ของคุณแทนครับ
-const API_BASE = 'https://ใส่ชื่อโปรเจกต์ของคุณ.ชื่อผู้ใช้.workers.dev'; 
+const API_BASE = 'https://test001.weerachaiartdesign.workers.dev/'; 
 
 const APP_VERSION = '1.0.0';
 const USER_ROLES = ['admin','manager','editor','checker','staff','guest'];
