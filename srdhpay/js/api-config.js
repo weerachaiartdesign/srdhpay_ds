@@ -1,5 +1,5 @@
 // api-config.js – ตั้งค่า endpoint และค่าคงที่
-const API_BASE = 'https://script.google.com/macros/s/AKfycbwgvgfa6QMaHwPkGfDMgFQ30_jESlrlcx124OIGp6Kro28m9akLh-HzFIgP3wCM0pjC/exec'; // ใส่ Web App URL จริง
+const API_BASE = 'https://script.google.com/macros/s/AKfycbyiTih-LYccEIdNQz35ycZCgstI17VbUCLM8t_JtroRUUd0lX2n09YJ1JUnWdsY-8Uf/exec'; // ใส่ Web App URL จริง
 const APP_VERSION = '1.0.0';
 const USER_ROLES = ['admin','manager','editor','checker','staff','guest'];
 
