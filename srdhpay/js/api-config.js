@@ -1,6 +1,6 @@
 // api-config.js - Centralized API Configuration
 const API_CONFIG = {
-  baseUrl: 'YOUR_WEBAPP_URL', // Replace with deployed GAS Web App URL
+  baseUrl: 'https://script.google.com/macros/s/AKfycbwgvgfa6QMaHwPkGfDMgFQ30_jESlrlcx124OIGp6Kro28m9akLh-HzFIgP3wCM0pjC/exec', // Replace with deployed GAS Web App URL
   timeout: 15000,
   retryAttempts: 2,
   
