@@ -1,11 +1,11 @@
 {
-  "name": "SRDH PAY - ทะเบียนเบิกจ่ายเงิน รพส.",
+  "name": "SRDH PAY – ระบบทะเบียนเบิกจ่ายเงิน รพ.สิรินธร",
   "short_name": "SRDH PAY",
-  "description": "ระบบทะเบียนเบิกจ่ายเงิน โรงพยาบาลสิรินธร",
-  "start_url": "/index.html",
+  "description": "Web Application สำหรับจัดการบันทึก ติดตาม ตรวจสอบ และรายงานสถานะการเบิกจ่ายเงิน",
+  "start_url": "index.html",
   "display": "standalone",
-  "background_color": "#f5f3ff",
-  "theme_color": "#7c3aed",
+  "background_color": "#f9fafb",
+  "theme_color": "#A855F7",
   "icons": [
     { "src": "icons/srdhpay-152.png", "sizes": "152x152", "type": "image/png" },
     { "src": "icons/srdhpay-192.png", "sizes": "192x192", "type": "image/png" },
