@@ -1,89 +1,33 @@
-// api-config.js - Centralized API Configuration
-const API_CONFIG = {
-  baseUrl: 'https://script.google.com/macros/s/AKfycbwgvgfa6QMaHwPkGfDMgFQ30_jESlrlcx124OIGp6Kro28m9akLh-HzFIgP3wCM0pjC/exec', // Replace with deployed GAS Web App URL
-  timeout: 15000,
-  retryAttempts: 2,
-  
-  endpoints: {
-    login: 'login',
-    guest: 'guest',
-    logout: 'logout',
-    changePassword: 'changePassword',
-    dashboard: 'dashboard',
-    importPreview: 'importPreview',
-    importCommit: 'importCommit',
-    getWaitingList: 'getWaitingList',
-    receiveItems: 'receiveItems',
-    getCheckupList: 'getCheckupList',
-    editItems: 'editItems',
-    returnItems: 'returnItems',
-    passItems: 'passItems',
-    getPassedList: 'getPassedList',
-    proposeItems: 'proposeItems',
-    approveItems: 'approveItems',
-    getApprovedList: 'getApprovedList',
-    payItems: 'payItems',
-    reportType: 'reportType',
-    reportStatus: 'reportStatus',
-    getSettings: 'getSettings',
-    saveSettings: 'saveSettings',
-    getUsers: 'getUsers',
-    addUser: 'addUser',
-    updateUser: 'updateUser',
-    deleteUser: 'deleteUser',
-    getAuditLogs: 'getAuditLogs',
-    getPermissions: 'getPermissions',
-    savePermissions: 'savePermissions',
-    getTelegramConfig: 'getTelegramConfig',
-    saveTelegramConfig: 'saveTelegramConfig'
-  }
-};
+// api-config.js – ตั้งค่า endpoint และค่าคงที่
+const API_BASE = 'https://script.google.com/macros/s/AKfycbwgvgfa6QMaHwPkGfDMgFQ30_jESlrlcx124OIGp6Kro28m9akLh-HzFIgP3wCM0pjC/exec'; // ใส่ Web App URL จริง
+const APP_VERSION = '1.0.0';
+const USER_ROLES = ['admin','manager','editor','checker','staff','guest'];
 
-// Centralized API call function
+// ฟังก์ชันเรียก API
 async function apiCall(action, data = {}) {
-  const token = localStorage.getItem('srdh_token');
-  const payload = { action, ...data, token };
-  
-  const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), API_CONFIG.timeout);
-  
+  const token = localStorage.getItem('token');
+  const payload = { action, ...data };
+  if (token) payload.token = token;
   try {
-    const response = await fetch(API_CONFIG.baseUrl, {
+    const res = await fetch(API_BASE, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
-      signal: controller.signal
+      headers: { 'Content-Type': 'application/json' }
     });
-    clearTimeout(timeoutId);
-    const result = await response.json();
-    if (!result.success && result.error) {
+    const result = await res.json();
+    if (!result.success) {
+      if (result.error === 'Invalid or expired token') {
+        localStorage.clear();
+        window.location.href = 'index.html';
+        return;
+      }
       throw new Error(result.error);
     }
-    return result;
-  } catch (error) {
-    if (API_CONFIG.retryAttempts > 0) {
-      return retryApiCall(action, data, API_CONFIG.retryAttempts);
+    return result.data;
+  } catch (e) {
+    if (e.message !== 'Invalid or expired token') {
+      Swal.fire('ผิดพลาด', e.message, 'error');
     }
-    throw error;
-  }
-}
-
-async function retryApiCall(action, data, attempts) {
-  for (let i = 0; i < attempts; i++) {
-    try {
-      await new Promise(r => setTimeout(r, 1000 * (i + 1)));
-      const token = localStorage.getItem('srdh_token');
-      const payload = { action, ...data, token };
-      const response = await fetch(API_CONFIG.baseUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
-      const result = await response.json();
-      if (!result.success && result.error) throw new Error(result.error);
-      return result;
-    } catch (e) {
-      if (i === attempts - 1) throw e;
-    }
+    throw e;
   }
 }
