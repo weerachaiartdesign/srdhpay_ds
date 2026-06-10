@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - SRDH PAY</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: { prompt: ['Prompt', 'sans-serif'] },
+          colors: {
+            purple: { pastel: '#E9D5FF', light: '#D8B4FE', DEFAULT: '#A855F7', dark: '#7E22CE' }
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="font-prompt bg-gray-50 dark:bg-gray-900 min-h-screen transition-colors">
+  <div id="sidebarContainer"></div>
+  <div class="lg:ml-64 p-4 md:p-6">
+    <header class="flex items-center justify-between mb-6">
+      <div>
+        <h1 class="text-2xl font-bold text-gray-800 dark:text-white">Dashboard</h1>
+        <p class="text-sm text-gray-500 dark:text-gray-400">ภาพรวมการเบิกจ่ายเงิน ปีงบประมาณ <span id="fiscalYear"></span></p>
+      </div>
+      <button id="darkToggle" class="p-2 rounded-lg bg-gray-200 dark:bg-gray-700 text-xl">☀️</button>
+    </header>
+    <!-- Summary Cards -->
+    <div id="summaryCards" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6"></div>
+    <!-- Progress & Avg -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+      <div class="bg-white dark:bg-gray-800 p-4 rounded-xl shadow">
+        <p class="font-semibold">ความก้าวหน้าการเบิกจ่าย</p>
+        <div class="bg-gray-200 dark:bg-gray-600 h-4 rounded-full mt-2 overflow-hidden">
+          <div id="progressBar" class="bg-purple-500 h-full rounded-full" style="width:0%"></div>
+        </div>
+        <p id="progressText" class="text-sm mt-1"></p>
+      </div>
+      <div class="bg-white dark:bg-gray-800 p-4 rounded-xl shadow">
+        <p class="text-sm text-gray-500">ระยะเวลาดำเนินการเฉลี่ย (รับเรื่อง - อนุมัติ)</p>
+        <p class="text-2xl font-bold"><span id="avgDays">-</span> วัน</p>
+      </div>
+    </div>
+    <!-- Charts -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div class="bg-white dark:bg-gray-800 p-4 rounded-xl shadow">
+        <h3 class="font-semibold mb-2">สถิติการเบิกจ่ายตามหน่วยงาน</h3>
+        <canvas id="deptChart" height="250"></canvas>
+      </div>
+      <div class="bg-white dark:bg-gray-800 p-4 rounded-xl shadow">
+        <h3 class="font-semibold mb-2">สถิติประเภทการเบิกจ่าย</h3>
+        <canvas id="typeChart" height="250"></canvas>
+      </div>
+    </div>
+    <div class="mt-6 bg-white dark:bg-gray-800 p-4 rounded-xl shadow">
+      <h3 class="font-semibold mb-2">จำนวนฎีกาแต่ละเดือน</h3>
+      <canvas id="monthlyChart" height="250"></canvas>
+    </div>
+  </div>
+  <script src="js/api-config.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/dashboard.js"></script>
+</body>
+</html>

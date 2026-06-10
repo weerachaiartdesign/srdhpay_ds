@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="th">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>รับเข้าระบบ - SRDH PAY</title>
+<script src="https://cdn.tailwindcss.com"></script><link href="https://fonts.googleapis.com/css2?family=Prompt&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css"><script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{prompt:['Prompt']}}}}</script>
+</head>
+<body class="font-prompt bg-gray-50 dark:bg-gray-900">
+<div id="sidebarContainer"></div>
+<div class="lg:ml-64 p-4">
+<header><h1 class="text-2xl font-bold">รับเข้าระบบ</h1><p class="text-sm text-gray-500">บันทึกการรับฎีกาเข้าระบบ</p></header>
+<div class="flex space-x-2 my-3">
+<button id="checkRegister" class="bg-purple-600 text-white p-2 rounded">ตรวจสอบการลงทะเบียน</button>
+<button id="receiveBtn" class="bg-purple-600 text-white p-2 rounded">รับเข้าระบบ</button>
+<button class="bg-purple-600 text-white p-2 rounded">กำหนดผู้ตรวจ</button>
+</div>
+<!-- filter -->
+<div class="grid grid-cols-2 md:grid-cols-5 gap-2 mb-3"><input type="date" class="p-2 border rounded"><input placeholder="เลขที่ลงทะเบียน" class="p-2 border rounded"><select class="p-2 border rounded"></select><select class="p-2 border rounded"></select><input placeholder="ผู้ส่ง" class="p-2 border rounded"></div>
+<div id="receiveTable" class="overflow-x-auto bg-white dark:bg-gray-800 rounded-xl shadow"></div>
+</div>
+<script src="js/api-config.js"></script><script src="js/main.js"></script><script src="js/receive.js"></script>
+</body>
+</html>

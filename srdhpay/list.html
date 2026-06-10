@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ทะเบียนเบิกจ่ายเงิน - SRDH PAY</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Prompt&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{prompt:['Prompt']}}}}</script>
+</head>
+<body class="font-prompt bg-gray-50 dark:bg-gray-900 min-h-screen">
+  <div id="sidebarContainer"></div>
+  <div class="lg:ml-64 p-4 md:p-6">
+    <header class="flex justify-between items-center mb-4">
+      <div>
+        <h1 class="text-2xl font-bold">ทะเบียนเบิกจ่ายเงิน</h1>
+        <p class="text-sm text-gray-500">ตรวจสอบรายการและสถานะ</p>
+      </div>
+      <button id="darkToggle" class="p-2 rounded bg-gray-200 dark:bg-gray-700">☀️</button>
+    </header>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-2 mb-4">
+      <select id="filterMoney" class="p-2 border rounded dark:bg-gray-700 dark:text-white"></select>
+      <select id="filterDept" class="p-2 border rounded dark:bg-gray-700 dark:text-white"></select>
+      <select id="filterStatus" class="p-2 border rounded dark:bg-gray-700 dark:text-white"></select>
+      <input type="text" id="searchBox" placeholder="ค้นหา..." class="p-2 border rounded dark:bg-gray-700 dark:text-white">
+    </div>
+    <!-- Desktop Table -->
+    <div class="hidden md:block overflow-x-auto bg-white dark:bg-gray-800 rounded-xl shadow">
+      <table class="w-full text-left">
+        <thead class="bg-gray-100 dark:bg-gray-700">
+          <tr><th class="p-3">ลำดับ</th><th class="p-3">สถานะ</th><th class="p-3">เลขที่/ฎีกา</th><th class="p-3">เจ้าหนี้</th><th class="p-3">รายการ</th><th class="p-3">จำนวนเงิน</th><th class="p-3">ประเภท/หน่วย</th><th>รายละเอียด</th></tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
+      </table>
+    </div>
+    <!-- Mobile Cards -->
+    <div id="mobileCards" class="md:hidden space-y-3"></div>
+    <!-- Pagination -->
+    <div class="flex justify-between items-center mt-4">
+      <select id="perPage" class="p-2 border rounded dark:bg-gray-700">
+        <option>50</option><option>100</option><option>200</option><option>500</option>
+      </select>
+      <div id="pagination" class="flex space-x-1"></div>
+    </div>
+  </div>
+  <script src="js/api-config.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/list.js"></script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="th">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ตั้งค่าผู้ใช้งาน - SRDH PAY</title>
+<script src="https://cdn.tailwindcss.com"></script><link href="https://fonts.googleapis.com/css2?family=Prompt&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css"><script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{prompt:['Prompt']}}}}</script>
+</head>
+<body class="font-prompt bg-gray-50 dark:bg-gray-900">
+<div id="sidebarContainer"></div>
+<div class="lg:ml-64 p-4">
+<header><h1 class="text-2xl font-bold">ตั้งค่าผู้ใช้งาน</h1></header>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+  <div class="bg-white dark:bg-gray-800 p-4 rounded-xl shadow">
+    <h2 class="text-lg font-semibold mb-2">ข้อมูลส่วนตัว</h2>
+    <form id="profileForm" class="space-y-3"><!-- email, password, name, position, dept (readonly) --></form>
+  </div>
+  <div class="bg-white dark:bg-gray-800 p-4 rounded-xl shadow">
+    <h2 class="text-lg font-semibold mb-2">จัดการผู้ใช้</h2>
+    <button id="addUserBtn" class="bg-purple-600 text-white px-3 py-1 rounded mb-2">เพิ่มผู้ใช้ใหม่</button>
+    <div id="userTable"></div>
+  </div>
+</div>
+</div>
+<script src="js/api-config.js"></script><script src="js/main.js"></script><script src="js/auth.js"></script>
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>นำเข้าข้อมูล - SRDH PAY</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Prompt&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://cdn.sheetjs.com/xlsx-0.20.0/package/dist/xlsx.full.min.js"></script>
+  <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{prompt:['Prompt']}}}}</script>
+</head>
+<body class="font-prompt bg-gray-50 dark:bg-gray-900 min-h-screen">
+  <div id="sidebarContainer"></div>
+  <div class="lg:ml-64 p-4 md:p-6">
+    <header class="flex justify-between items-center mb-4">
+      <h1 class="text-2xl font-bold">นำเข้าข้อมูล</h1>
+      <button id="darkToggle" class="p-2 rounded bg-gray-200 dark:bg-gray-700">☀️</button>
+    </header>
+    <div class="flex space-x-2 mb-4">
+      <button id="addManualBtn" class="bg-purple-600 text-white px-4 py-2 rounded">+ เพิ่มข้อมูล</button>
+      <button id="registerBtn" class="bg-purple-600 text-white px-4 py-2 rounded disabled:opacity-50" disabled>ลงทะเบียน</button>
+      <button class="bg-gray-600 text-white px-4 py-2 rounded">พิมพ์ใบลงทะเบียน</button>
+    </div>
+    <div id="dropZone" class="border-2 border-dashed border-purple-300 dark:border-purple-600 rounded-xl p-8 text-center mb-4">
+      <p>ลากไฟล์ .xlsx มาวาง หรือคลิกเพื่อเลือกไฟล์ (สูงสุด 5MB)</p>
+      <input type="file" id="fileInput" accept=".xlsx" hidden>
+    </div>
+    <div id="previewContainer" class="bg-white dark:bg-gray-800 rounded-xl shadow overflow-x-auto hidden">
+      <table class="w-full text-sm">
+        <thead><tr><th class="p-2">#</th><th>ประเภทเงิน</th><th>ใบขอเบิก</th><th>ผู้ขาย</th><th>จำนวนเงิน</th><th>รายการ</th><th>แก้ไข</th></tr></thead>
+        <tbody id="previewBody"></tbody>
+      </table>
+    </div>
+  </div>
+  <script src="js/api-config.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/import.js"></script>
+</body>
+</html>

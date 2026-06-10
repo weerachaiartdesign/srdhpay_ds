@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="th">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ตั้งค่าระบบ - SRDH PAY</title>
+<script src="https://cdn.tailwindcss.com"></script><link href="https://fonts.googleapis.com/css2?family=Prompt&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css"><script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{prompt:['Prompt']}}}}</script>
+</head>
+<body class="font-prompt bg-gray-50 dark:bg-gray-900">
+<div id="sidebarContainer"></div>
+<div class="lg:ml-64 p-4">
+<header><h1 class="text-2xl font-bold">ตั้งค่าระบบ</h1></header>
+<div class="flex flex-wrap gap-2 mt-4">
+  <button class="tab-btn bg-purple-600 text-white px-4 py-2 rounded" data-tab="permission">Permission Matrix</button>
+  <button class="tab-btn bg-purple-200 text-gray-800 px-4 py-2 rounded" data-tab="session">Session</button>
+  <button class="tab-btn bg-purple-200 text-gray-800 px-4 py-2 rounded" data-tab="audit">Audit Logs</button>
+  <button class="tab-btn bg-purple-200 text-gray-800 px-4 py-2 rounded" data-tab="telegram">Telegram</button>
+  <button class="tab-btn bg-purple-200 text-gray-800 px-4 py-2 rounded" data-tab="retention">Data Retention</button>
+</div>
+<div id="tabContent" class="mt-4 bg-white dark:bg-gray-800 p-4 rounded-xl shadow"></div>
+</div>
+<script src="js/api-config.js"></script><script src="js/main.js"></script><script src="js/system.js"></script>
+</body>
+</html>
